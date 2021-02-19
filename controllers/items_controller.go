@@ -1,4 +1,4 @@
-package controller
+package controllers
 
 import (
 	"fmt"
@@ -8,7 +8,18 @@ import (
 	"net/http"
 )
 
-func Create(w http.ResponseWriter, r *http.Request) {
+var (
+	ItemController itemControllerInterface = &itemController{}
+)
+
+type itemControllerInterface interface {
+	Create(http.ResponseWriter, *http.Request)
+	Get(http.ResponseWriter, *http.Request)
+}
+type itemController struct {
+}
+
+func (c *itemController) Create(w http.ResponseWriter, r *http.Request) {
 	if err := oauth.AuthenticateRequest(r); err != nil {
 		// Todo : return err to caller
 	}
@@ -22,6 +33,6 @@ func Create(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(result)
 }
 
-func Get(w http.ResponseWriter, r *http.Request) {
+func (c *itemController) Get(w http.ResponseWriter, r *http.Request) {
 
 }
