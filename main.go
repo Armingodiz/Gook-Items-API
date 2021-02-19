@@ -1,7 +1,9 @@
 package main
 
-import "github.com/ArminGodiz/Gook-Items-API/app"
+import (
+	"github.com/ArminGodiz/Gook-Items-API/app"
+)
 
-func main()  {
+func main() {
 	app.StartApplication()
 }
