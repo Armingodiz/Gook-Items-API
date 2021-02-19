@@ -7,5 +7,5 @@ import (
 
 func MapUrls() {
 	router.HandleFunc("/items", controllers.ItemController.Create).Methods(http.MethodPost)
-
+	router.HandleFunc("/ping", controllers.PingController.Pong).Methods(http.MethodGet)
 }
