@@ -6,6 +6,7 @@ import (
 	"github.com/ArminGodiz/Gook-Items-API/services"
 	"github.com/ArminGodiz/Gook-Items-API/services/oauth"
 	"github.com/ArminGodiz/Gook-Items-API/utils/http_utils"
+	"github.com/ArminGodiz/Gook-Items-API/utils/rest_errors"
 	"io/ioutil"
 	"net/http"
 )
@@ -24,6 +25,10 @@ type itemController struct {
 func (c *itemController) Create(w http.ResponseWriter, r *http.Request) {
 	if err := oauth.AuthenticateRequest(r); err != nil {
 		http_utils.RespondJson(w, err.Code, err)
+		return
+	}
+	if oauth.GetCallerId(r) == 0 {
+		http_utils.RespondJson(w, http.StatusBadRequest, rest_errors.NewBadRequestError("invalid access token !"))
 		return
 	}
 	var itemRequest items.Item
