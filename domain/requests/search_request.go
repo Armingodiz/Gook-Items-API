@@ -1,7 +1,10 @@
 package requests
 
 import (
+	"fmt"
+	"github.com/ArminGodiz/Gook-Items-API/domain/items"
 	"github.com/ArminGodiz/Gook-Items-API/utils/rest_errors"
+	"strconv"
 	"strings"
 )
 
@@ -22,7 +25,20 @@ func (r *SearchItemRequest) Validate() *rest_errors.RestErr {
 	return nil
 }
 
-func (r *SearchItemRequest) Compare() bool{
+func (r *SearchItemRequest) Compare(item items.Item) bool {
+	switch r.Field {
+	case "id":
+		return item.Id == r.Value
+	case "seller":
+		return strings.EqualFold(strconv.Itoa(int(item.Seller)), r.Value)
+	case "title":
+		return item.Title == r.Value
+	case "price":
+		price := fmt.Sprintf("%f", item.Price)
+		return price == r.Value
+	case "status":
+		return r.Value == item.Status
+	}
 	return false
 }
 

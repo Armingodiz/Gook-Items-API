@@ -18,7 +18,7 @@ func (r *SearchItemRequest) Search() ([]*items.Item, *rest_errors.RestErr) {
 		var item items.Item
 		err = json.Unmarshal([]byte(temp), &item)
 		if err == nil {
-			if r.Compare() {
+			if r.Compare(item) {
 				results = append(results, &item)
 			}
 		}
