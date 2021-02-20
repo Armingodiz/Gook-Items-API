@@ -25,9 +25,9 @@ func (item *Item) Save() *rest_errors.RestErr {
 }
 
 func (item *Item) Get() (*Item, *rest_errors.RestErr) {
-	at, err := redis_client.DB.HGet(context.Background(), "items", item.Id).Result()
+	at, err := redis_client.DB.HGet(context.Background(), row, item.Id).Result()
 	if err != nil {
-		return nil, rest_errors.NewInternalServerError("no access token found !")
+		return nil, rest_errors.NewInternalServerError("item found !")
 	}
 	fmt.Println(at)
 	var result Item

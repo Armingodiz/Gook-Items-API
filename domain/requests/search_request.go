@@ -22,8 +22,8 @@ func (r *SearchItemRequest) Validate() *rest_errors.RestErr {
 	return nil
 }
 
-func (r *SearchItemRequest) Compare() (bool, *rest_errors.RestErr) {
-	return false, nil
+func (r *SearchItemRequest) Compare() bool{
+	return false
 }
 
 func isAvailableAsField(field string) bool {
