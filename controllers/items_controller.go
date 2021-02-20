@@ -69,9 +69,18 @@ func (c *itemController) Search(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	requestField := vars["field"]
 	fieldValue := vars["value"]
-	req:= requests.SearchItemRequest{
+	req := requests.SearchItemRequest{
 		Field: requestField,
 		Value: fieldValue,
 	}
-
+	if err := req.Validate(); err != nil {
+		http_utils.RespondJson(w, err.Code, err)
+		return
+	}
+	results, err := services.ItemService.Search(requestField)
+	if err != nil {
+		http_utils.RespondJson(w, err.Code, err)
+		return
+	}
+	http_utils.RespondJson(w, http.StatusOK, results)
 }
