@@ -66,20 +66,24 @@ func (c *itemController) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *itemController) Search(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	requestField := vars["field"]
-	fieldValue := vars["value"]
-	req := requests.SearchItemRequest{
-		Field: requestField,
-		Value: fieldValue,
+	var searchRequest requests.SearchItemRequest
+	requestBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http_utils.RespondJson(w, http.StatusBadRequest, err)
+		return
 	}
-	if err := req.Validate(); err != nil {
+	defer r.Body.Close()
+	if err := json.Unmarshal(requestBody, &searchRequest); err != nil {
+		http_utils.RespondJson(w, http.StatusBadRequest, err)
+		return
+	}
+	if err := searchRequest.Validate(); err != nil {
 		http_utils.RespondJson(w, err.Code, err)
 		return
 	}
-	results, err := services.ItemService.Search(req)
-	if err != nil {
-		http_utils.RespondJson(w, err.Code, err)
+	results, err2 := services.ItemService.Search(searchRequest)
+	if err2 != nil {
+		http_utils.RespondJson(w, http.StatusInternalServerError, err)
 		return
 	}
 	http_utils.RespondJson(w, http.StatusOK, results)
