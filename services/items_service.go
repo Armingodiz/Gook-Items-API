@@ -24,5 +24,10 @@ func (s *itemsService) Create(item items.Item) (*items.Item, *rest_errors.RestEr
 }
 
 func (s *itemsService) Get(id string) (*items.Item, *rest_errors.RestErr) {
-	return nil, rest_errors.NewInternalServerError("implementing ...")
+	item := items.Item{Id: id}
+	result, err := item.Get()
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }
