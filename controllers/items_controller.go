@@ -7,6 +7,7 @@ import (
 	"github.com/ArminGodiz/Gook-Items-API/services/oauth"
 	"github.com/ArminGodiz/Gook-Items-API/utils/http_utils"
 	"github.com/ArminGodiz/Gook-Items-API/utils/rest_errors"
+	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
 )
@@ -52,5 +53,12 @@ func (c *itemController) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *itemController) Get(w http.ResponseWriter, r *http.Request) {
-
+	vars := mux.Vars(r)
+	itemId := vars["id"]
+	item, err := services.ItemService.Get(itemId)
+	if err != nil {
+		http_utils.RespondJson(w, err.Code, err)
+		return
+	}
+	http_utils.RespondJson(w, http.StatusOK, item)
 }
