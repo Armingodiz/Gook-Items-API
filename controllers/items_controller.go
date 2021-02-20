@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"github.com/ArminGodiz/Gook-Items-API/domain/items"
+	"github.com/ArminGodiz/Gook-Items-API/domain/requests"
 	"github.com/ArminGodiz/Gook-Items-API/services"
 	"github.com/ArminGodiz/Gook-Items-API/services/oauth"
 	"github.com/ArminGodiz/Gook-Items-API/utils/http_utils"
@@ -19,6 +20,7 @@ var (
 type itemControllerInterface interface {
 	Create(http.ResponseWriter, *http.Request)
 	Get(http.ResponseWriter, *http.Request)
+	Search(http.ResponseWriter, *http.Request)
 }
 type itemController struct {
 }
@@ -61,4 +63,15 @@ func (c *itemController) Get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	http_utils.RespondJson(w, http.StatusOK, item)
+}
+
+func (c *itemController) Search(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	requestField := vars["field"]
+	fieldValue := vars["value"]
+	req:= requests.SearchItemRequest{
+		Field: requestField,
+		Value: fieldValue,
+	}
+
 }
