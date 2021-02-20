@@ -77,7 +77,7 @@ func (c *itemController) Search(w http.ResponseWriter, r *http.Request) {
 		http_utils.RespondJson(w, err.Code, err)
 		return
 	}
-	results, err := services.ItemService.Search(requestField)
+	results, err := services.ItemService.Search(req)
 	if err != nil {
 		http_utils.RespondJson(w, err.Code, err)
 		return
